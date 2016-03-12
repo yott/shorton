@@ -1,0 +1,26 @@
+{
+  "name": "yott/wp-shortcode",
+  "type": "wordpress-plugin",
+  "description": "Plugin to register shortcodes and provide UI elements for them.",
+  "license": "MIT",
+  "authors": {
+    "name": "Logan Yott",
+    "email": "loganyott@gmail.com",
+    "homepage": "https://www.github.com/loganyott"
+  },
+  "autoload": {
+    "psr-4": {
+      "Yott\\WP\\Shortcode": "src/"
+    }
+  },
+  "repositories": [
+    {
+      "type": "composer",
+      "url": "https://wpackagist.org"
+    }
+  ],
+  "require": {
+    "php": ">=5.3.0",
+    "composer/installers": "~1.0"
+  }
+}
