@@ -7,6 +7,6 @@
  * Version: 0.1
  * Author URI: https://github.com/loganyott
  */
-if ( class_exists( "Yott\\WP\\Shortcode" ) ) {
-    Yott\WP\Shortcode::init();
+if ( class_exists( "Yott\\WP\\ShortcodeController" ) ) {
+    Yott\WP\ShortcodeController::init();
 }
