@@ -7,7 +7,7 @@ class ShortcodeController {
 	protected static $shortcodes = [];
 
 	/**
-	 * Shortcodes only transform data, so we don't need an instance
+	 * Don't need more than one controller
 	 */
 	private function __construct() {}
 
@@ -37,9 +37,15 @@ class ShortcodeController {
 	 *  Class parameter of JSON object must exist
 	 */
 	public static function register_json( $json ) {
-		if ( is_dir( $json ) ) {
+		if ( is_array( $json ) ) {
+			foreach( $json as $json ) {
+				self::register_json( $json );
+			}
+		} elseif ( is_dir( $json ) ) {
 			$json = glob( $json . '/*.json' );
 			self::register_json( $json );
+		} elseif ( file_exists( $json ) ) {
+			self::register_json( file_get_contents( $json ) );
 		} else {
 			$json = json_decode( $json );
 			if ( !is_array( $json ) ) {
@@ -50,7 +56,7 @@ class ShortcodeController {
 				if ( !class_exists( $class ) ) {
 					throw new \Exception( 'Invalid class type for Shortcode: ' . $class );
 				}
-				self::register_shortcode( $class( $shortcode ) );
+				self::register_shortcode( new $class( $shortcode ) );
 			}
 		}
 	}

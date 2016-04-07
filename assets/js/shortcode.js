@@ -1,4 +1,4 @@
-Yott = Yott || {};
+var Yott = Yott || {};
 Yott.Shortcode = Yott.Shortcode || {};
 Yott.Shortcode.Editor = Yott.Shortcode.Editor || {};
 Yott.Shortcode.Editor.addHandler = function( shortcode ) {
@@ -11,8 +11,9 @@ Yott.Shortcode.Editor.addHandler = function( shortcode ) {
             });
         }
 		var text = '['+shortcode.shortcode+' '+atts+'][/'+shortcode.shortcode+']';
+		console.log(!tinyMCE.activeEditor);
 		if( !tinyMCE.activeEditor ) {
-    		jQuery('textarea#content').append(text);
+			QTags.insertContent(text);
   		} else {
     		tinyMCE.execCommand('mceInsertContent', false, text);
   		}

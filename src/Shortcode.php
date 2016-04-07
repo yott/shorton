@@ -12,6 +12,11 @@ class Shortcode {
 	 */
 	protected $name;
 	/**
+	 * Whether to show the shortcode in an admin UI
+	 * @var bool
+	 */
+	protected $show_ui;
+	/**
 	 * The twig template of this shortcode
 	 * @var string
 	 */
@@ -23,18 +28,15 @@ class Shortcode {
 	 */
 	protected $data = [];
 
-	public function __construct( $json ) {
-		$obj = json_decode( $json );
-		$props = get_object_vars( $obj );
-		foreach ( $props as $prop ) {
+	public function __construct( $shortcode ) {
+		$props = (array) $shortcode;
+		foreach ( $props as $prop => $val ) {
 			if ( property_exists( $this, $prop ) ) {
-				$this->$prop = $obj->$prop;
+				$this->$prop = $val;
 			}
 		}
 
-		\add_action( 'init', function() {
-			\add_shortcode( $this->shortcode, [$this, 'do_shortcode'] );
-		});
+		\add_shortcode( $this->shortcode, [$this, 'do_shortcode'] );
 		if ( $this->show_ui ) {
 			\add_action( 'admin_enqueue_scripts', function () {
 				\wp_enqueue_script('shortcode-editor', \plugin_dir_url( dirname( __FILE__ ) ) . 'assets/js/shortcode.js', ['jquery']);
@@ -142,8 +144,8 @@ class Shortcode {
 	}
 
 	protected function addToEditor() {
-		\add_action( 'media_buttons_context', [ get_called_class(), 'media_buttons_context' ] );
-		\add_action( 'admin_footer', [ get_called_class(), 'admin_footer' ] );
+		\add_action( 'media_buttons_context', [ $this, 'media_buttons_context' ] );
+		\add_action( 'admin_footer', [ $this, 'admin_footer' ] );
 	}
 
 	public function media_buttons_context( $context ) {
