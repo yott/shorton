@@ -72,6 +72,10 @@ class Shortcode {
 		$this->prepare();
 		$this->data['content'] = \do_shortcode( $content );
 		$after = \apply_filters( 'shortcode_after', '', $this->shortcode );
+
+		\do_action( "shorton\\shortcode", $this );
+		\do_action( "shorton\\shortcode\\{$this->shortcode}", $this );
+
 		return $before . $this->render() . $after;
 	}
 
