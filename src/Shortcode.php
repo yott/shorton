@@ -1,5 +1,7 @@
 <?php namespace Yott\WP;
 
+use \Timber\Timber;
+
 class Shortcode {
 	/**
 	 * The machine name of this shortcode
@@ -93,9 +95,8 @@ class Shortcode {
 			$template = $this->template;
 		}
 		$template = \apply_filters( 'shortcode_template', $template, $this->shortcode );
-
-		if ( class_exists( 'Timber' ) ) {
-			return \Timber::compile( $template, $this->data );
+		if ( class_exists( '\\Timber\\Timber' ) ) {
+			return Timber::compile( $template, $this->data );
 		} else {
 			include_once $template;
 		}
